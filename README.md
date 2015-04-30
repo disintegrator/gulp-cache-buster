@@ -44,7 +44,12 @@ Given a CSS file with the following content:
       background-position: center;
     }
 
-Notice that asset reference are wrapped with `ASSET{<relative_path>}`.
+Notice that asset reference are wrapped with `ASSET{<relative_path>}`. This
+notation can be changed by setting tokenRegExp.
+
+Furthermore, while CSS is used in this example this plugin can be passed
+HTML, Jade and any text files that contain the asset reference as seen in the
+CSS example.
 
 We can build the following gulpfile tasks:
 
@@ -58,7 +63,7 @@ We can build the following gulpfile tasks:
     var rename = require('gulp-rename');
 
 
-    // Using it in an image processing workflow looks like this:
+    // First we build up asset hash digests using gulp-hasher
     gulp.task('images', function() {
       return gulp.src('assets/images/**/*')
         .pipe(imagemin({
@@ -67,14 +72,14 @@ We can build the following gulpfile tasks:
           use: [pngquant()]
         }))
         .pipe(gulp.dest('dist/assets/images/'))
-        .pipe(hasher());     // We have output assets, hash and cache them
+        .pipe(hasher());
     });
 
-    // Using it in a css workflow looks like this:
+    // Using gulp-buster in a css workflow looks like this:
     gulp.task('styles', ['images'], function() {
       return gulp.src('assets/styles/themes/*/style.less')
         .pipe(autoprefixer())
-        .pipe(buster({
+        .pipe(buster({      // <-- STARTING HERE
           assetRoot: path.join(__dirname, 'dist'),
           hashes: hasher.hashes     // since images task has run we can pass in the hashes object
         }))
