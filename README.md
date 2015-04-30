@@ -17,12 +17,25 @@ This plugin was designed to work with [gulp-hasher][1]
 Options with default values shown:
 
     buster({
-      hashes: {},   // a mapping of asset paths to their hash digests
-      assetRoot: '',  // point the root folder of your assets e.g. 'dist/'
-      assetURL: '/',  // the base url to use when building cache-buster asset URL
-      tokenRegExp: /ASSET{(.*?)}/g,     // OPTIONAL: The pattern describing cache-busted asset references
-      hashLength: 8     // OPTIONAL: the number of characters to use from the assets hash digest
+      hashes: {},
+      assetRoot: '',
+      assetURL: '/',
+      tokenRegExp: /ASSET{(.*?)}/g,
+      hashLength: 8
     })
+
+- `hashes`: an object containing mappings of asset paths to their hash digests
+- `assetRoot`: points to the root folder containing assets e.g. 'dist/'
+- `tokenRegExp`: pattern that describes how asset references are presented in your source code (css, less, jade, html, etc...)
+    - With the default setting you define an asset reference like so: `background-image: url(ASSET{assets/images/pingu.jpg});`
+    - This option is usually left as-is
+- `hashLength`: the number of characters to use from the asset's hash digest
+    - With the default value this plugin will generate url's like so: `background-image: url(http://cdn.example.com/assets/images/pingu.jpg?v=df23b44e});`
+    - This option is usually left as-is
+
+If the plugin encounters an asset path that is not present in the `hashes`
+mapping, the plugin will not add the url query parameter
+(the `?v=df23b44e` part).
 
 ## Example
 
