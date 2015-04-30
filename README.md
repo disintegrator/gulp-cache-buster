@@ -1,16 +1,16 @@
-gulp-buster
-===========
+gulp-cache-buster
+=================
 
 Gulp plugin that searches for asset references (URLs) and replaces them
 with a cache busted representation.
 
 This plugin was designed to work with [gulp-hasher][1]
 
-[![Build Status](https://travis-ci.org/disintegrator/gulp-buster.svg)](https://travis-ci.org/disintegrator/gulp-buster)
+[![Build Status](https://travis-ci.org/disintegrator/gulp-cache-buster.svg)](https://travis-ci.org/disintegrator/gulp-cache-buster)
 
 ## Install
 
-    npm install --save-dev gulp-buster
+    npm install --save-dev gulp-cache-buster
 
 ## Usage
 
@@ -67,7 +67,7 @@ CSS example.
 We can build the following gulpfile tasks:
 
     var autoprefixer = require('gulp-autoprefixer');
-    var buster = require('gulp-buster');
+    var buster = require('gulp-cache-buster');
     var gulp = require('gulp');
     var hasher = require('gulp-hasher');
     var imagemin = require('gulp-imagemin');
@@ -88,7 +88,7 @@ We can build the following gulpfile tasks:
         .pipe(hasher());
     });
 
-    // Using gulp-buster in a css workflow looks like this:
+    // Using gulp-cache-buster in a css workflow looks like this:
     gulp.task('styles', ['images'], function() {
       return gulp.src('assets/styles/themes/*/style.less')
         .pipe(autoprefixer())
@@ -106,8 +106,8 @@ We can build the following gulpfile tasks:
 
 ## See also
 
-- [gulp-hasher][1] which can be used with gulp-buster to obtain a mapping of
-asset paths and their md5 digests
+- [gulp-hasher][1] which can be used with gulp-cache-buster to obtain a mapping
+of asset paths and their md5 digests
 
 [1]: https://github.com/disintegrator/gulp-hasher
 

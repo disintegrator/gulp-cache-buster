@@ -46,7 +46,7 @@ var bufferToStream = function(buf) {
 };
 
 
-describe('gulp-buster', function() {
+describe('gulp-cache-buster', function() {
   var hashes = {
     'assets/images/logo.svg': '2fdb2405940a5ee7be866046d714b74f',
     'assets/images/logo-basic.png': '9c2d3666248c1f28af9d63ab38725d72'

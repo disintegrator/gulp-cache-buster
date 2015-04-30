@@ -1,5 +1,5 @@
 {
-  "name": "gulp-buster",
+  "name": "gulp-cache-buster",
   "version": "0.1.0",
   "description": "Gulp plugin that searches for asset references (URLs) and replaces them with a cache busted representation.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:disintegrator/gulp-buster.git"
+    "url": "git@github.com:disintegrator/gulp-cache-buster.git"
   },
   "keywords": [
     "gulpplugin",
@@ -21,9 +21,9 @@
   "author": "George Haidar <ghaidar0@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/disintegrator/gulp-buster/issues"
+    "url": "https://github.com/disintegrator/gulp-cache-buster/issues"
   },
-  "homepage": "https://github.com/disintegrator/gulp-buster",
+  "homepage": "https://github.com/disintegrator/gulp-cache-buster",
   "dependencies": {
     "event-stream": "^3.3.0",
     "lodash": "^3.7.0",
