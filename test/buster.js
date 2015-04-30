@@ -139,7 +139,7 @@ describe('gulp-buster', function() {
   });
 
   describe('with unrecognised asset reference', function() {
-    it('should not add cache busting fragment to asset url', function(done) {
+    it('should not add cache busting query to asset url', function(done) {
       var file = new File({
         contents: makeCSSBuffer(function(rel) {
           return 'ASSET{' + rel + '_123}';
@@ -173,7 +173,7 @@ describe('gulp-buster', function() {
   });
 
   describe('with 7 as hash length option', function() {
-    it('should add cache busting fragment with 7 charcters', function(done) {
+    it('should add cache busting query with 7 charcters', function(done) {
       var file = new File({
         contents: makeCSSBuffer(function(rel) {
           return 'ASSET{' + rel + '}';
