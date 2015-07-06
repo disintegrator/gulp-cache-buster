@@ -17,6 +17,7 @@ This plugin was designed to work with [gulp-hasher][1]
 Options with default values shown:
 
     buster({
+      env: 'development',
       hashes: {},
       assetRoot: '',
       assetURL: '/',
@@ -24,6 +25,7 @@ Options with default values shown:
       hashLength: 8
     })
 
+- `env`: the target environment for the current build
 - `hashes`: an object containing mappings of asset paths to their hash digests
 - `assetRoot`: points to the root folder containing assets e.g. 'dist/'
 - `tokenRegExp`: pattern that describes how asset references are presented in your source code (css, less, jade, html, etc...)
@@ -63,6 +65,20 @@ notation can be changed by setting tokenRegExp.
 Furthermore, while CSS is used in this example this plugin can be passed
 HTML, Jade and any text files that contain the asset reference as seen in the
 CSS example.
+
+There is additional support for some common switches for selecting minified
+and/or gzipped assets as shown below:
+
+    <link rel="stylesheet" href="ASSET{assets/styles/style.css,min}" />
+    <script src="ASSET{assets/scripts/vendor.js,min,gz}"></script>
+
+If the `env` option is set to production these lines will turn into something like this:
+
+    <link rel="stylesheet" href="https://cdn.mysite.com/assets/styles/style.min.css?v=af1358" />
+    <script src="https://cdn.mysite.com/assets/scripts/vendor.min.js.gz?v=db231bc"></script>
+
+... also assumes `assetURL` is https://cdn.mysite.com/
+
 
 We can build the following gulpfile tasks:
 

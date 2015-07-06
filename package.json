@@ -1,6 +1,6 @@
 {
   "name": "gulp-cache-buster",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Gulp plugin that searches for asset references (URLs) and replaces them with a cache busted representation.",
   "main": "index.js",
   "scripts": {
