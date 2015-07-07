@@ -39,12 +39,12 @@ var plugin = function(options) {
     var parts = group.split(',');
     var assetPath = _.first(parts);
     var args = _.map(_.rest(parts), _.trim);
-    if (options.env === 'production') {
-      assetPath = getProductionPath(assetPath, args);
-    }
     var p = path.join(opts.assetRoot, assetPath);
     var digest = (opts.hashes[p] || '');
     var u = url.parse(opts.assetURL);
+    if (options.env === 'production') {
+      assetPath = getProductionPath(assetPath, args);
+    }
     u.pathname += assetPath;
     if (digest) {
       u.query = _.extend({}, u.query, {v: digest.substr(0, opts.hashLength)});
