@@ -62,6 +62,18 @@ describe('gulp-cache-buster', function() {
       query: {v: v}
     });
   });
+  var expectedMode1 = makeCSSBuffer(function(rel) {
+    var h = hashes[rel];
+    if (!h) { return rel; }
+    var v = h.substr(0, 8);
+    var index = rel.lastIndexOf('/');
+    var pathname = rel.slice(0, index) + '/v-' + v + rel.slice(index, rel.length);	
+    return url.format({
+      protocol: 'https',
+      host: 'example.com',
+      pathname: pathname
+    });
+  });
   describe('in streaming mode', function() {
     it('should cache bust asset references', function(done) {
       var file = new File({
@@ -240,6 +252,39 @@ describe('gulp-cache-buster', function() {
           assert.isNull(err, 'Unexpected error');
           done();
         }));
+    });
+  });
+  
+  describe('with mode 1 option', function() {
+    it('should insert hash in url pathname before filename', function(done) {
+      var file = new File({
+        contents: makeCSSBuffer(function(rel) {
+          return 'ASSET{' + rel + '}';
+        })
+      });
+
+      var customHashes = _.object(_.map(hashes, function(val, key) {
+        return [path.join(__dirname, 'dist', key), val];
+      }));
+
+      es.readArray([file])
+        .pipe(buster({
+          hashes: customHashes,
+          assetRoot: path.join(__dirname, 'dist'),
+          assetURL: 'https://example.com',
+          mode: 1
+        }))
+        .pipe(es.map(function(file, cb) {
+          file.pipe(es.wait(function(err, data) {
+            assert.isNull(err, 'Unexpected error');
+            assert.equal(data.toString('utf8'), expectedMode1.toString('utf8'));
+            cb(null, file);
+          }));
+        }))
+        .pipe(es.wait(function(err) {
+          assert.isNull(err, 'Unexpected error');
+          done();
+        }));      
     });
   });
 });

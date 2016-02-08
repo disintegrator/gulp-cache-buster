@@ -22,7 +22,8 @@ Options with default values shown:
       assetRoot: '',
       assetURL: '/',
       tokenRegExp: /ASSET{(.*?)}/g,
-      hashLength: 8
+      hashLength: 8,
+      mode: 0
     })
 
 - `env`: the target environment for the current build
@@ -34,6 +35,17 @@ Options with default values shown:
 - `hashLength`: the number of characters to use from the asset's hash digest
     - With the default value this plugin will generate url's like so: `background-image: url(http://cdn.example.com/assets/images/pingu.jpg?v=df23b44e});`
     - This option is usually left as-is
+- `mode`: controls how the hash is added to the URL
+	- 0 (Default) - append the hash as a query parameter.
+	- 1 - insert the hash as part of the URL path, before the filename. e.g. `http://cdn.example.com/assets/images/v-df23b44e/pingu.jpg`. NOTE: use this mode only if your CDN/proxy ignores key caching by query parameters. You will also need a webserver URL rewrite rule to discard the /v-xxxxxxxx/ portion of the URL, before incoming HTTP requests are processed. For IIS, the rewrite rule looks like this: 
+    
+		````
+		<rule name="cachebust">
+		  <match url="([\S]+)(/v-[0-9]+/)([\S]+)" />
+		  <action type="Rewrite" url="{R:1}/{R:3}" />
+		</rule>
+		````
+
 
 If the plugin encounters an asset path that is not present in the `hashes`
 mapping, the plugin will not add the url query parameter
