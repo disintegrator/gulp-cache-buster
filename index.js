@@ -45,7 +45,11 @@ var plugin = function(options) {
     if (options.env === 'production') {
       assetPath = getProductionPath(assetPath, args);
     }
-    u.pathname += assetPath;
+    if(u.pathname != null) {
+      u.pathname += assetPath;
+    } else {
+      u.pathname = assetPath;
+    }
     if (digest) {
       u.query = _.extend({}, u.query, {v: digest.substr(0, opts.hashLength)});
     }
