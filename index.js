@@ -13,7 +13,8 @@ var defaults = {
   assetRoot: '',
   assetURL: '/',
   tokenRegExp: /ASSET{(.*?)}/g,
-  hashLength: 8
+  hashLength: 8,
+  removeToken: true
 };
 
 
@@ -45,9 +46,16 @@ var plugin = function(options) {
     if (options.env === 'production') {
       assetPath = getProductionPath(assetPath, args);
     }
-    u.pathname += assetPath;
+    if(u.pathname != null) {
+      u.pathname += assetPath;
+    } else {
+      u.pathname = assetPath;
+    }
     if (digest) {
       u.query = _.extend({}, u.query, {v: digest.substr(0, opts.hashLength)});
+    }
+    if(options.removeToken === false) {
+      return match.replace(assetPath, url.format(u));
     }
     return url.format(u);
   };
