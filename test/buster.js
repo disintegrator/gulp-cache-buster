@@ -242,4 +242,34 @@ describe('gulp-cache-buster', function() {
         }));
     });
   });
+
+  describe('with rename assets option', function() {
+    it('should insert cache busting hash into filename', function(done) {
+      var file = new File({
+        contents: makeCSSBuffer(function(rel) {
+          return 'ASSET{' + rel + '}';
+        })
+      });
+
+      es.readArray([file])
+        .pipe(buster({
+          hashes: hashes,
+          assetRoot: '',
+          assetDestination: '',
+          renameFiles: true,
+          assetURL: 'https://example.com'
+        }))
+        .pipe(es.map(function(file, cb) {
+          file.pipe(es.wait(function(err, data) {
+            assert.isNull(err, 'Unexpected error');
+            assert.isTrue(data.toString('utf8').indexOf('url(https://example.com/assets/images/logo-2fdb2405.svg)') > -1);
+            cb(null, file);
+          }));
+        }))
+        .pipe(es.wait(function(err) {
+          assert.isNull(err, 'Unexpected error');
+          done();
+        }));
+    });
+  });
 });

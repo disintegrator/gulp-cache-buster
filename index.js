@@ -6,11 +6,14 @@ var url = require('url');
 var _ = require('lodash');
 var es = require('event-stream');
 var rs = require('replacestream');
+var fs = require('fs');
 
 var defaults = {
   env: 'development',
   hashes: {},
   assetRoot: '',
+  assetDestination: '',
+  renameFiles: false,
   assetURL: '/',
   tokenRegExp: /ASSET{(.*?)}/g,
   hashLength: 8
@@ -45,9 +48,20 @@ var plugin = function(options) {
     if (options.env === 'production') {
       assetPath = getProductionPath(assetPath, args);
     }
-    u.pathname += assetPath;
+
     if (digest) {
-      u.query = _.extend({}, u.query, {v: digest.substr(0, opts.hashLength)});
+      var hash = digest.substr(0, opts.hashLength);
+      if (opts.renameFiles) {
+        var fileNameParts = assetPath.split('.');
+        var newFilename = fileNameParts[0] + '-' + hash + '.' + fileNameParts[1];
+        u.pathname += newFilename;
+        fs.createReadStream(opts.assetRoot + assetPath).pipe(fs.createWriteStream(opts.assetDestination + newFilename));
+      } else {
+    u.pathname += assetPath;
+        u.query = _.extend({}, u.query, {v: hash});
+      }
+    } else {
+      u.pathname += assetPath;
     }
     return url.format(u);
   };
